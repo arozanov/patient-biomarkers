@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Patient {
+  id        Int      @id @default(autoincrement())
+  clientId  String   @unique @map("client_id")
+  birthdate DateTime @map("date_birthdate") @db.Date
+  gender    Int
+  ethnicity Int
+
+  testResults TestResult[]
+
+  @@map("patients")
+}
+
+model TestResult {
+  id                 Int      @id @default(autoincrement())
+  patientId          Int      @map("patient_id")
+  dateTesting        DateTime @map("date_testing") @db.Date
+  creatine           Decimal  @db.Decimal(10, 4)
+  creatineUnit       String   @map("creatine_unit")
+  chloride           Decimal  @db.Decimal(10, 4)
+  chlorideUnit       String   @map("chloride_unit")
+  fastingGlucose     Decimal  @map("fasting_glucose") @db.Decimal(10, 4)
+  fastingGlucoseUnit String   @map("fasting_glucose_unit")
+  potassium          Decimal  @db.Decimal(10, 4)
+  potassiumUnit      String   @map("potassium_unit")
+  sodium             Decimal  @db.Decimal(10, 4)
+  sodiumUnit         String   @map("sodium_unit")
+  totalCalcium       Decimal  @map("total_calcium") @db.Decimal(10, 4)
+  totalCalciumUnit   String   @map("total_calcium_unit")
+  totalProtein       Decimal  @map("total_protein") @db.Decimal(10, 4)
+  totalProteinUnit   String   @map("total_protein_unit")
+
+  patient Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@unique([patientId, dateTesting])
+  @@map("test_results")
+}

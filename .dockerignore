@@ -1,0 +1,11 @@
+node_modules
+**/node_modules
+packages/*/dist
+.git
+.env
+.DS_Store
+.idea
+.vscode
+*.log
+coverage
+.playwright-mcp
